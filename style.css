@@ -1,1 +1,38 @@
+body {
+    background: linear-gradient(to bottom, #1a1a1a, #4a4a4a);
+    color: white;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
+#ghost-image {
+    margin: 20px;
+}
+
+#ghost-image img {
+    border: 3px solid #8B0000;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+#search-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    background: #8B0000;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+#search-button:hover {
+    background: #FF0000;
+    transform: scale(1.05);
+}
