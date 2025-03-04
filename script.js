@@ -8,7 +8,7 @@ const evilStatElement = document.getElementById('evil-stat');
 
 // Переменные для управления игрой
 let timerId = null;
-let timeLeft = 10;
+let timeLeft = 2;
 
 // База данных случайных событий
 const events = [
