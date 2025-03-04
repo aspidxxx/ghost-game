@@ -1,4 +1,16 @@
-// Массив случайных событий (добавь свои варианты)
+// Получаем все необходимые элементы из HTML
+const searchButton = document.getElementById('search-button');
+const timerElement = document.getElementById('timer');
+const timeLeftElement = document.getElementById('time-left');
+const eventChoiceElement = document.getElementById('event-choice');
+const goodStatElement = document.getElementById('good-stat');
+const evilStatElement = document.getElementById('evil-stat');
+
+// Переменные для управления игрой
+let timerId = null;
+let timeLeft = 10;
+
+// База данных случайных событий
 const events = [
   { 
     type: 'good',
@@ -52,82 +64,83 @@ const events = [
   }
 ];
 
-// Получаем элементы из HTML
-const searchButton = document.getElementById('search-button');
-const timerElement = document.getElementById('timer');
-const timeLeftElement = document.getElementById('time-left');
-const eventChoiceElement = document.getElementById('event-choice');
-const goodChoiceButton = document.getElementById('good-choice');
-const evilChoiceButton = document.getElementById('evil-choice');
-const goodStatElement = document.getElementById('good-stat');
-const evilStatElement = document.getElementById('evil-stat');
-
-let timerId = null; // Идентификатор таймера
-let timeLeft = 2; // Начальное время
-
-// Обработчик клика на кнопку "Найти событие"
+// Обработчик кнопки "Найти событие"
 searchButton.addEventListener('click', () => {
-    // Скрываем кнопку и показываем таймер
-    searchButton.classList.add('hidden');
-    timerElement.classList.remove('hidden');
+  // Прячем кнопку и показываем таймер
+  searchButton.classList.add('hidden');
+  timerElement.classList.remove('hidden');
+  
+  // Запускаем обратный отсчет
+  startTimer();
+});
+
+// Функция запуска таймера
+function startTimer() {
+  timerId = setInterval(() => {
+    timeLeft--;
+    timeLeftElement.textContent = timeLeft;
     
-    // Запускаем таймер
-    timerId = setInterval(() => {
-        timeLeft--; // Уменьшаем время на 1 секунду
-        timeLeftElement.textContent = timeLeft; // Обновляем отображение
-        
-        // Если время вышло
-        if (timeLeft <= 0) {
-            clearInterval(timerId); // Останавливаем таймер
-            timerElement.classList.add('hidden'); // Скрываем таймер
-            showRandomEvent(); // Показываем выбор события
-        }
-    }, 1000); // Интервал: 1000 мс = 1 секунда
-});
+    if(timeLeft <= 0) {
+      clearInterval(timerId);
+      timerElement.classList.add('hidden');
+      showRandomEvent();
+    }
+  }, 1000);
+}
 
-// Функция показа случайного события
+// Показ случайного события
 function showRandomEvent() {
-  const randomEvent = events[Math.floor(Math.random() * events.length)];
-}
-
-// Обработчик выбора "Добра"
-goodChoiceButton.addEventListener('click', () => {
-    const currentGood = parseInt(goodStatElement.textContent); // Текущее значение
-    goodStatElement.textContent = currentGood + 1; // Увеличиваем на 1
-    resetSearch(); // Сбрасываем поиск
-});
-
-// Обработчик выбора "Зла"
-evilChoiceButton.addEventListener('click', () => {
-    const currentEvil = parseInt(evilStatElement.textContent);
-    evilStatElement.textContent = currentEvil + 1;
-    resetSearch();
-});
-
-// Сброс параметров для нового поиска
-function resetSearch() {
-    eventChoiceElement.classList.add('hidden'); // Скрываем выбор
-    searchButton.classList.remove('hidden'); // Показываем кнопку
-    timeLeft = 10; // Сбрасываем таймер
-    timeLeftElement.textContent = timeLeft; // Обновляем отображение
-}
-// Очищаем предыдущие кнопки
+  // Выбираем случайное событие
+  const randomIndex = Math.floor(Math.random() * events.length);
+  const event = events[randomIndex];
+  
+  // Создаем HTML для события
   eventChoiceElement.innerHTML = `
-    <h3>${randomEvent.text}</h3>
-    <p>${randomEvent.description}</p>
-    <button class="choice-button">Выбрать</button>
+    <h3>${event.text}</h3>
+    <p class="event-description">${event.description}</p>
+    <button class="event-action">Принять решение</button>
   `;
 
-  const choiceButton = document.querySelector('.choice-button');
+  // Находим новую кнопку и добавляем обработчик
+  const actionButton = eventChoiceElement.querySelector('.event-action');
+  actionButton.addEventListener('click', () => handleEventChoice(event.type));
   
-  choiceButton.onclick = () => {
-    if (randomEvent.type === 'good') {
-      goodStatElement.textContent = parseInt(goodStatElement.textContent) + 1;
-    } else {
-      evilStatElement.textContent = parseInt(evilStatElement.textContent) + 1;
-    }
-    resetSearch();
-  };
-
+  // Показываем блок с событием
   eventChoiceElement.classList.remove('hidden');
 }
+
+// Обработка выбора игрока
+function handleEventChoice(choiceType) {
+  if(choiceType === 'good') {
+    goodStatElement.textContent = parseInt(goodStatElement.textContent) + 1;
+  } else {
+    evilStatElement.textContent = parseInt(evilStatElement.textContent) + 1;
+  }
+  resetGameState();
+}
+
+// Сброс состояния игры
+function resetGameState() {
+  // Скрываем блок с событием
+  eventChoiceElement.classList.add('hidden');
+  
+  // Восстанавливаем начальные значения
+  timeLeft = 10;
+  timeLeftElement.textContent = timeLeft;
+  
+  // Показываем кнопку поиска
+  searchButton.classList.remove('hidden');
+}
+
+// Инициализация игры при загрузке
+function initGame() {
+  // Сбрасываем статистику
+  goodStatElement.textContent = '0';
+  evilStatElement.textContent = '0';
+  
+  // Гарантируем начальное состояние
+  resetGameState();
+}
+
+// Запускаем игру при загрузке страницы
+window.onload = initGame;
