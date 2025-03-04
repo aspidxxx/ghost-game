@@ -32,6 +32,23 @@
         10. Кнопка с id="search-button". 
         Через этот id мы сможем "ловить" клики в JavaScript.
     -->
+    <!-- Блок таймера -->
+<div id="timer" class="hidden">
+    <p>Поиск события... <span id="time-left">10</span> сек</p>
+</div>
+
+<!-- Блок выбора события -->
+<div id="event-choice" class="hidden">
+    <h3>Событие:</h3>
+    <button id="good-choice">Спасти кошку (+Добро)</button>
+    <button id="evil-choice">Напугать детей (+Зло)</button>
+</div>
+
+<!-- Статистика навыков -->
+<div id="stats">
+    <p>Добро: <span id="good-stat">0</span></p>
+    <p>Зло: <span id="evil-stat">0</span></p>
+</div>
 </body>
 <script src="script.js"></script>
 <!-- 11. Подключение JavaScript-логики из файла script.js -->
