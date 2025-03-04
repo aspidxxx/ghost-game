@@ -158,3 +158,40 @@ body {
 .choice-button:hover {
   background: #666 !important;
 }
+.choice-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.choice {
+  padding: 20px;
+  border-radius: 10px;
+  width: 250px;
+}
+
+.good-choice {
+  background: rgba(0, 100, 0, 0.3);
+  border: 2px solid #006400;
+}
+
+.evil-choice {
+  background: rgba(139, 0, 0, 0.3);
+  border: 2px solid #8B0000;
+}
+
+.choice-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+}
+
+.description {
+  font-style: italic;
+  color: #888;
+  margin: 15px 0;
+}
+
+.continue-button {
+  background: #444;
+  margin-top: 15px;
+}
