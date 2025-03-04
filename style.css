@@ -128,3 +128,33 @@ body {
     padding: 10px;
     border-radius: 5px;
 }
+/* Стили для окна события */
+#event-choice {
+  background: rgba(0, 0, 0, 0.9);
+  padding: 20px;
+  border-radius: 15px;
+  border: 2px solid #666;
+  max-width: 300px;
+  margin: 20px auto;
+}
+
+#event-choice h3 {
+  color: #FFD700;
+  margin: 0 0 10px 0;
+}
+
+#event-choice p {
+  color: #AAA;
+  font-style: italic;
+  margin-bottom: 15px;
+}
+
+.choice-button {
+  background: #444 !important;
+  border: 1px solid #777 !important;
+  transition: all 0.3s !important;
+}
+
+.choice-button:hover {
+  background: #666 !important;
+}
