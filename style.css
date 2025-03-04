@@ -84,3 +84,47 @@ body {
     /* 24. Увеличиваем кнопку на 5% */
     transform: scale(1.05);
 }
+/* Скрытые элементы */
+.hidden {
+    display: none !important;
+}
+
+/* Стили для таймера */
+#timer {
+    margin: 20px;
+    font-size: 20px;
+    color: #FFD700; /* Золотой цвет текста */
+}
+
+/* Стили для блока выбора события */
+#event-choice {
+    margin-top: 20px;
+}
+
+#event-choice button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#good-choice {
+    background: #006400; /* Темно-зеленый для "Добра" */
+    color: white;
+}
+
+#evil-choice {
+    background: #8B0000; /* Темно-красный для "Зла" */
+    color: white;
+}
+
+/* Стили для статистики */
+#stats {
+    position: fixed; /* Фиксированное положение */
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.7); /* Полупрозрачный фон */
+    padding: 10px;
+    border-radius: 5px;
+}
