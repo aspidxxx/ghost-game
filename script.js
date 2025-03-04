@@ -1,4 +1,4 @@
-// Получаем все необходимые элементы из HTML
+// Получаем элементы интерфейса
 const searchButton = document.getElementById('search-button');
 const timerElement = document.getElementById('timer');
 const timeLeftElement = document.getElementById('time-left');
@@ -6,75 +6,41 @@ const eventChoiceElement = document.getElementById('event-choice');
 const goodStatElement = document.getElementById('good-stat');
 const evilStatElement = document.getElementById('evil-stat');
 
-// Переменные для управления игрой
+// Игровые переменные
 let timerId = null;
-let timeLeft = 2;
+let timeLeft = 10;
 
-// База данных случайных событий
-const events = [
-  { 
-    type: 'good',
+// Разделенные события
+const goodEvents = [
+  {
     text: 'Спасти кошку с дерева',
     description: 'Мягкие лапки теперь в безопасности!'
   },
   {
-    type: 'good', 
-    text: 'Помочь старушке донести сумки',
-    description: 'Она дала тебе леденец в форме черепа'
-  },
-  {
-    type: 'good',
-    text: 'Вернуть потерянный кошелек',
-    description: 'Внутри была фотография котенка'
-  },
-  {
-    type: 'good',
-    text: 'Потушить пожар в лесу',
-    description: 'Еноты тебя благодарно обнимают'
-  },
-  {
-    type: 'good',
-    text: 'Обучить детей математике',
-    description: 'Теперь они любят квадратные корни'
-  },
-  {
-    type: 'evil',
-    text: 'Украсть праздничный торт',
-    description: 'На нем было 666 свечек'
-  },
-  {
-    type: 'evil',
-    text: 'Разбить зеркала в доме',
-    description: '7 лет неудачи... но ты же призрак!'
-  },
-  {
-    type: 'evil',
-    text: 'Спрятать пульт от телевизора',
-    description: 'Семья смотрит только рекламу'
-  },
-  {
-    type: 'evil', 
-    text: 'Испортить WiFi соседям',
-    description: 'Теперь они читают... книги'
-  },
-  {
-    type: 'evil',
-    text: 'Напугать почтальона',
-    description: 'Он разбросал письма с криком'
+    text: 'Помочь старушке',
+    description: 'Она дала тебе волшебный леденец'
   }
 ];
 
-// Обработчик кнопки "Найти событие"
+const evilEvents = [
+  {
+    text: 'Украсть торт',
+    description: 'На нем было 666 свечек'
+  },
+  {
+    text: 'Испортить WiFi',
+    description: 'Соседи теперь читают книги'
+  }
+];
+
+// Обработчик кнопки поиска
 searchButton.addEventListener('click', () => {
-  // Прячем кнопку и показываем таймер
   searchButton.classList.add('hidden');
   timerElement.classList.remove('hidden');
-  
-  // Запускаем обратный отсчет
   startTimer();
 });
 
-// Функция запуска таймера
+// Запуск таймера
 function startTimer() {
   timerId = setInterval(() => {
     timeLeft--;
@@ -83,64 +49,67 @@ function startTimer() {
     if(timeLeft <= 0) {
       clearInterval(timerId);
       timerElement.classList.add('hidden');
-      showRandomEvent();
+      showChoices();
     }
   }, 1000);
 }
 
-// Показ случайного события
-function showRandomEvent() {
-  // Выбираем случайное событие
-  const randomIndex = Math.floor(Math.random() * events.length);
-  const event = events[randomIndex];
-  
-  // Создаем HTML для события
+// Показ двух вариантов
+function showChoices() {
+  // Выбираем случайные события
+  const good = goodEvents[Math.floor(Math.random() * goodEvents.length)];
+  const evil = evilEvents[Math.floor(Math.random() * evilEvents.length)];
+
+  // Создаем HTML
   eventChoiceElement.innerHTML = `
-    <h3>${event.text}</h3>
-    <p class="event-description">${event.description}</p>
-    <button class="event-action">Принять решение</button>
+    <div class="choice-container">
+      <div class="choice good-choice">
+        <h3>${good.text}</h3>
+        <button class="choice-button" data-type="good">Выбрать Добро</button>
+      </div>
+      <div class="choice evil-choice">
+        <h3>${evil.text}</h3>
+        <button class="choice-button" data-type="evil">Выбрать Зло</button>
+      </div>
+    </div>
   `;
 
-  // Находим новую кнопку и добавляем обработчик
-  const actionButton = eventChoiceElement.querySelector('.event-action');
-  actionButton.addEventListener('click', () => handleEventChoice(event.type));
+  // Добавляем обработчики
+  document.querySelectorAll('.choice-button').forEach(button => {
+    button.addEventListener('click', (e) => {
+      const type = e.target.dataset.type;
+      showResult(type === 'good' ? good : evil);
+    });
+  });
   
-  // Показываем блок с событием
   eventChoiceElement.classList.remove('hidden');
 }
 
-// Обработка выбора игрока
-function handleEventChoice(choiceType) {
-  if(choiceType === 'good') {
+// Показ результата выбора
+function showResult(event) {
+  eventChoiceElement.innerHTML = `
+    <div class="result">
+      <h3>${event.text}</h3>
+      <p class="description">${event.description}</p>
+      <button class="continue-button">Продолжить</button>
+    </div>
+  `;
+
+  // Обновляем статистику
+  if(event === good) {
     goodStatElement.textContent = parseInt(goodStatElement.textContent) + 1;
   } else {
     evilStatElement.textContent = parseInt(evilStatElement.textContent) + 1;
   }
-  resetGameState();
+
+  // Возврат к началу
+  document.querySelector('.continue-button').addEventListener('click', resetGame);
 }
 
-// Сброс состояния игры
-function resetGameState() {
-  // Скрываем блок с событием
-  eventChoiceElement.classList.add('hidden');
-  
-  // Восстанавливаем начальные значения
+// Сброс игры
+function resetGame() {
   timeLeft = 10;
   timeLeftElement.textContent = timeLeft;
-  
-  // Показываем кнопку поиска
+  eventChoiceElement.classList.add('hidden');
   searchButton.classList.remove('hidden');
 }
-
-// Инициализация игры при загрузке
-function initGame() {
-  // Сбрасываем статистику
-  goodStatElement.textContent = '0';
-  evilStatElement.textContent = '0';
-  
-  // Гарантируем начальное состояние
-  resetGameState();
-}
-
-// Запускаем игру при загрузке страницы
-window.onload = initGame;
