@@ -108,7 +108,7 @@ function showResult(event) {
 
 // Сброс игры
 function resetGame() {
-  timeLeft = 10;
+  timeLeft = 2;
   timeLeftElement.textContent = timeLeft;
   eventChoiceElement.classList.add('hidden');
   searchButton.classList.remove('hidden');
