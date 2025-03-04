@@ -8,7 +8,7 @@ const evilStatElement = document.getElementById('evil-stat');
 
 // Игровые переменные
 let timerId = null;
-let timeLeft = 10;
+let timeLeft = 2;
 
 // Разделенные события
 const goodEvents = [
