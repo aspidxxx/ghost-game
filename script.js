@@ -1,3 +1,57 @@
+// Массив случайных событий (добавь свои варианты)
+const events = [
+  { 
+    type: 'good',
+    text: 'Спасти кошку с дерева',
+    description: 'Мягкие лапки теперь в безопасности!'
+  },
+  {
+    type: 'good', 
+    text: 'Помочь старушке донести сумки',
+    description: 'Она дала тебе леденец в форме черепа'
+  },
+  {
+    type: 'good',
+    text: 'Вернуть потерянный кошелек',
+    description: 'Внутри была фотография котенка'
+  },
+  {
+    type: 'good',
+    text: 'Потушить пожар в лесу',
+    description: 'Еноты тебя благодарно обнимают'
+  },
+  {
+    type: 'good',
+    text: 'Обучить детей математике',
+    description: 'Теперь они любят квадратные корни'
+  },
+  {
+    type: 'evil',
+    text: 'Украсть праздничный торт',
+    description: 'На нем было 666 свечек'
+  },
+  {
+    type: 'evil',
+    text: 'Разбить зеркала в доме',
+    description: '7 лет неудачи... но ты же призрак!'
+  },
+  {
+    type: 'evil',
+    text: 'Спрятать пульт от телевизора',
+    description: 'Семья смотрит только рекламу'
+  },
+  {
+    type: 'evil', 
+    text: 'Испортить WiFi соседям',
+    description: 'Теперь они читают... книги'
+  },
+  {
+    type: 'evil',
+    text: 'Напугать почтальона',
+    description: 'Он разбросал письма с криком'
+  }
+];
+
 // Получаем элементы из HTML
 const searchButton = document.getElementById('search-button');
 const timerElement = document.getElementById('timer');
@@ -33,7 +87,7 @@ searchButton.addEventListener('click', () => {
 
 // Функция показа случайного события
 function showRandomEvent() {
-    eventChoiceElement.classList.remove('hidden'); // Показываем блок выбора
+  const randomEvent = events[Math.floor(Math.random() * events.length)];
 }
 
 // Обработчик выбора "Добра"
@@ -56,4 +110,24 @@ function resetSearch() {
     searchButton.classList.remove('hidden'); // Показываем кнопку
     timeLeft = 10; // Сбрасываем таймер
     timeLeftElement.textContent = timeLeft; // Обновляем отображение
+}
+// Очищаем предыдущие кнопки
+  eventChoiceElement.innerHTML = `
+    <h3>${randomEvent.text}</h3>
+    <p>${randomEvent.description}</p>
+    <button class="choice-button">Выбрать</button>
+  `;
+
+  const choiceButton = document.querySelector('.choice-button');
+  
+  choiceButton.onclick = () => {
+    if (randomEvent.type === 'good') {
+      goodStatElement.textContent = parseInt(goodStatElement.textContent) + 1;
+    } else {
+      evilStatElement.textContent = parseInt(evilStatElement.textContent) + 1;
+    }
+    resetSearch();
+  };
+
+  eventChoiceElement.classList.remove('hidden');
 }
