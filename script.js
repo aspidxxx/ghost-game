@@ -9,7 +9,7 @@ const goodStatElement = document.getElementById('good-stat');
 const evilStatElement = document.getElementById('evil-stat');
 
 let timerId = null; // Идентификатор таймера
-let timeLeft = 10; // Начальное время
+let timeLeft = 2; // Начальное время
 
 // Обработчик клика на кнопку "Найти событие"
 searchButton.addEventListener('click', () => {
