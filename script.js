@@ -113,3 +113,24 @@ function resetGame() {
   eventChoiceElement.classList.add('hidden');
   searchButton.classList.remove('hidden');
 }
+// Показ результата выбора
+function showResult(event) {
+  eventChoiceElement.innerHTML = `
+    <div class="result">
+      <h3>${event.text}</h3>
+      <p class="description">${event.description}</p>
+      <button class="continue-button">Продолжить</button>
+    </div>
+  `;
+
+  // Обновляем статистику
+  if (event.type === 'good') { // ✅ Используем свойство type
+    goodStatElement.textContent = parseInt(goodStatElement.textContent) + 1;
+  } else {
+    evilStatElement.textContent = parseInt(evilStatElement.textContent) + 1;
+  }
+
+  // Назначаем обработчик кнопке ПОСЛЕ её создания
+  const continueButton = eventChoiceElement.querySelector('.continue-button');
+  continueButton.addEventListener('click', resetGame);
+}
